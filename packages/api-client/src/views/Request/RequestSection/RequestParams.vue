@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ViewLayoutCollapse from '@/components/ViewLayout/ViewLayoutCollapse.vue'
 import { useWorkspace } from '@/store/workspace'
+import { ScalarTagInput } from '@/views/Request/RequestSection/Demo'
 import RequestTable from '@/views/Request/RequestSection/RequestTable.vue'
 import { ScalarButton } from '@scalar/components'
 import {
@@ -161,7 +162,7 @@ watch(
           size="sm"
           variant="ghost"
           @click.stop="deleteAllRows">
-          Clear
+          Clear me
         </ScalarButton>
       </div>
     </template>

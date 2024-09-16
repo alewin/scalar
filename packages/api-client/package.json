@@ -53,6 +53,10 @@
       "import": "./dist/views/Request/components/index.js",
       "types": "./dist/views/Request/components/index.d.ts"
     },
+    "./views/Request/RequestSection/Demo": {
+      "import": "./dist/views/Request/RequestSection/Demo/index.js",
+      "types": "./dist/views/Request/RequestSection/Demo/index.d.ts"
+    },
     "./store": {
       "import": "./dist/store/index.js",
       "types": "./dist/store/index.d.ts"
@@ -126,6 +130,7 @@
   "dependencies": {
     "@headlessui/tailwindcss": "^0.2.0",
     "@headlessui/vue": "^1.7.20",
+    "@iconify/vue": "^4.1.2",
     "@scalar/components": "workspace:*",
     "@scalar/draggable": "workspace:*",
     "@scalar/oas-utils": "workspace:*",
@@ -138,12 +143,14 @@
     "@scalar/use-toasts": "workspace:*",
     "@scalar/use-tooltip": "workspace:*",
     "@vueuse/core": "^10.10.0",
+    "@yaireo/tagify": "^4.31.3",
     "cva": "1.0.0-beta.1",
     "fuse.js": "^7.0.0",
     "js-cookie": "^3.0.5",
     "nanoid": "^5.0.7",
     "pretty-bytes": "^6.1.1",
     "pretty-ms": "^8.0.0",
+    "radix-vue": "^1.9.3",
     "vue": "^3.4.29",
     "vue-router": "^4.3.0",
     "whatwg-mimetype": "^4.0.0",

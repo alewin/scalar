@@ -4,6 +4,7 @@ import DataTable from '@/components/DataTable/DataTable.vue'
 import DataTableCell from '@/components/DataTable/DataTableCell.vue'
 import DataTableCheckbox from '@/components/DataTable/DataTableCheckbox.vue'
 import DataTableRow from '@/components/DataTable/DataTableRow.vue'
+import ScalarTagInput from '@/views/Request/RequestSection/Demo/ScalarTagInput.vue'
 import { ScalarButton, ScalarIcon } from '@scalar/components'
 import type { RequestExampleParameter } from '@scalar/oas-utils/entities/workspace/spec'
 import { computed } from 'vue'
@@ -69,6 +70,12 @@ const flattenValue = (item: RequestExampleParameter) => {
     ? item.default[0]
     : item.default
 }
+
+const isArrayType = (item: RequestExampleParameter) => item.type === 'array' // Helper function to check if type is array
+
+const handleArrayValueUpdate = (idx: number, value: string[]) => {
+  emit('updateRow', idx, 'value', value.join(','))
+}
 </script>
 <template>
   <DataTable
@@ -98,38 +105,49 @@ const flattenValue = (item: RequestExampleParameter) => {
           " />
       </DataTableCell>
       <DataTableCell>
-        <CodeInput
-          :class="{
-            'pr-6': showTooltip(item),
-          }"
-          disableCloseBrackets
-          disableEnter
-          disableTabIndent
-          :enum="item.enum"
-          :max="item.maximum"
-          :min="item.minimum"
-          :modelValue="item.value"
-          :nullable="item.nullable"
-          placeholder="Value"
-          :type="item.type"
-          @blur="emit('inputBlur')"
-          @focus="emit('inputFocus')"
-          @input="items && idx === items.length - 1 && emit('addRow')"
-          @selectVariable="(v: string) => handleSelectVariable(idx, 'value', v)"
-          @update:modelValue="
-            (v: string) => emit('updateRow', idx, 'value', v)
-          ">
-          <template
-            v-if="valueOutOfRange(item).value"
-            #warning>
-            {{ valueOutOfRange(item).value }}
-          </template>
-          <template #icon>
-            <RequestTableTooltip
-              v-if="showTooltip(item)"
-              :item="{ ...item, default: flattenValue(item) }" />
-          </template>
-        </CodeInput>
+        <template v-if="isArrayType(item)">
+          <ScalarTagInput
+            class="responsive-tag-input"
+            :modelValue="item.value ? item.value.split(',') : []"
+            :placeholder="`Values (${item.type})`"
+            @update:modelValue="(v) => handleArrayValueUpdate(idx, v)" />
+        </template>
+        <template v-else>
+          <CodeInput
+            :class="{
+              'pr-6': showTooltip(item),
+            }"
+            disableCloseBrackets
+            disableEnter
+            disableTabIndent
+            :enum="item.enum"
+            :max="item.maximum"
+            :min="item.minimum"
+            :modelValue="item.value"
+            :nullable="item.nullable"
+            placeholder="Value"
+            :type="item.type"
+            @blur="emit('inputBlur')"
+            @focus="emit('inputFocus')"
+            @input="items && idx === items.length - 1 && emit('addRow')"
+            @selectVariable="
+              (v: string) => handleSelectVariable(idx, 'value', v)
+            "
+            @update:modelValue="
+              (v: string) => emit('updateRow', idx, 'value', v)
+            ">
+            <template
+              v-if="valueOutOfRange(item).value"
+              #warning>
+              {{ valueOutOfRange(item).value }}
+            </template>
+            <template #icon>
+              <RequestTableTooltip
+                v-if="showTooltip(item)"
+                :item="{ ...item, default: flattenValue(item) }" />
+            </template>
+          </CodeInput>
+        </template>
       </DataTableCell>
       <DataTableCell
         v-if="showUploadButton"

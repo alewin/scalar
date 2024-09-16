@@ -135,6 +135,15 @@ paths:
         - {}
       parameters:
         - '$ref': '#/components/parameters/planetId'
+        - name: limit
+          in: query
+          description: An array of numbers to limit the results.
+          required: false
+          schema:
+            type: array
+            items:
+              type: number
+              example: 1
       responses:
         '200':
           description: Planet Found
